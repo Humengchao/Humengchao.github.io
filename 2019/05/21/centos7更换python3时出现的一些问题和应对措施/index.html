@@ -21,7 +21,7 @@
 
   
 
-  <title>Liang | 独望</title>
+  <title>centos7更换python3时出现的一些问题和应对措施 | 独望</title>
 
   
 
@@ -92,14 +92,14 @@
 
     
     
-      <h1 class="header-title"><a href="/2019/05/18/Liang/">Liang</a></h1>
+      <h1 class="header-title"><a href="/2019/05/21/centos7更换python3时出现的一些问题和应对措施/">centos7更换python3时出现的一些问题和应对措施</a></h1>
       <h2 class="header-subtitle">
         
           
           <!--
           
   <a href="javascript:;" class="article-date">
-    <time datetime="2019-05-18T13:57:19.000Z" itemprop="datePublished">2019-05-18 09:57:19</time>
+    <time datetime="2019-05-21T12:18:28.000Z" itemprop="datePublished">2019-05-21 08:18:28</time>
   </a>
 
           -->
@@ -120,7 +120,10 @@
     
 
     <div class="article-entry">
-      <p>今天是社团文化艺术节，中午就去了，一直到晚上回来。而Liang这次是负责人之一，就在那指挥着，说实话这次的活动办的挺成功的，虽然我之前一直不看好。和Liang也共同在一个部门快一年了，上个学期没怎么注意过她，这个学期来才发现她是真的厉害，学习成绩好，又参加各种比赛获奖，技术也学的比我们超前多了，比如这次的网页制作大赛她就是用vue写的前端，django（这个还是我刚刚一直试着百度才拼出来正确的名字，这也证实了我俩之间的差距）写的，而我用hexo弄个博客都搞了那么久。<br>她那么优秀，自然我就对她有所好感啦，从这个学期开始就一直对她有好感，也可以说是有点喜欢吧（有点像高一时候的李雯婷啊，不过现在的我更加成熟了，更加克制了）。但是除了工作上的事都没有私下沟通过，下午我就想着借着还她零食的钱加她微信，晚上聚餐时，在她要去值班先走后我就加了她微信，同她聊了会天，才知道，她比我想象中的更厉害些，其他的也不敢奢求啥了，不过也还是希望吧， :) 希望，毕竟来日方长。希望我以后也能像她一样优秀，好好努力，加油HMC。</p>
+      <p>今天在V站上看到了一个爬虫程序，是爬知乎上的小姐姐图片的（嘿嘿）。【原网址<a href="https://www.v2ex.com/t/565923#reply89】于是就想着也去爬着试试。但是我的电脑之前重装了系统，python的环境全没了，就想着在我的centos的虚拟机中装一个python3的环境去爬这个图片。" target="_blank" rel="noopener">https://www.v2ex.com/t/565923#reply89】于是就想着也去爬着试试。但是我的电脑之前重装了系统，python的环境全没了，就想着在我的centos的虚拟机中装一个python3的环境去爬这个图片。</a><br>本来我是想上教程的，但是之前看了很多的网站才弄成功了，后来想写这个博客时候又找不到了那个有用的网站，下面是我之前写了一半的<br>    首先下载python3就和以前在别的系统上不同了，得自己编译，比较麻烦。话不多说上教程。<br>    1、安装一些基础的软件，wget，vim啥的。<br>        yum install wget<br>        yum install vim<br>    2、通过wget下载python3的源码。这个在官网下载的，速度很慢，无奈，可能国内的几个源有吧，比如清华源，阿里源啥的。</p>
+<pre><code>3、解压
+</code></pre><p>既然博客是写不了了，我就来说说一些重点吧。<br>centos7上面默认是安装了python2.7的环境，而且yum也貌似是绑定了python2.7的。所以当你安装好了python3后，得去改下yum的默认python版本。具体方法是：<br>    which yum<br>查看yum所在的位置，一般是在 /usr/bin/yum，所以我们进这个文件修改<br>    vim /usr/bin/yum<br>把第一行的注释了的代码后面的python改为系统当前的，也就是python3，  不过有个前提，是你得把系统的python版本改了，这个我找不到了那个网站。<br>其次是要安装一些库的时候下载pip，<br>    yum install python-pip<br>有时候会下载不了，提示没有找到python-pip这个时候你得依次运行下面的命令<br>    curl <a href="https://bootstrap.pypa.io/get-pip.py" target="_blank" rel="noopener">https://bootstrap.pypa.io/get-pip.py</a> -o get-pip.py   # 下载安装脚本<br>    sudo python get-pip.py    # 运行安装脚本<br>    sudo python3 get-pip.py    # 运行安装脚本。<br>现在你可以通过<br>    pip -V<br>查看pip的版本了，这里面有个要注意的是pip和yum一样会绑定python的版本，如果运行了上面的命令显示绑定了python2的版本则需要更改pip默认绑定的版本了。用which pip来查看pip所处的位置<br>    which pip<br>我的是位于/usr/bin/pip,所以得去这里修改pip绑定的python版本<br>    vim /usr/bin/pip<br>将第一行被注释了的代码改为#!/usr/bin/python,也就是将最后面的python2去掉2.然后保存。<br>这样一般是pip下载好了，可以通过<br>    pip install requests<br>类似的命令来下载各种库了，上面的是下载requests库，其他库也类似，把requests改为你要下载的库的名字就可以了。</p>
+<p>对了可能大家对上面的vim的操作有些不熟悉啥的，这里我也来讲点上面会用到的vim的操作<br>    vim /usr/bin/pip      #代表是打开位于 /usr/bin/ 文件夹中的pip<br>vim有命令模式、编辑模式，你刚刚进去的时候便是命令模式，这时候按下a便进入了编辑模式，你便可以来编辑文本了，编辑好了后得返回命令模式才能保存、退出。怎么返回命令模式呢？按ESC键，之后你按冒（shift加L左边的键）号之后再按wq和回车便可保存退出了。</p>
 
     </div>
 
@@ -133,22 +136,13 @@
 <nav class="card-container card-article-nav">
   <div class="card-wrap">
     
-      <div class="card-item">
-        <article>
-          
-          <a class="card-link article-nav-link" href="/2019/05/21/centos7更换python3时出现的一些问题和应对措施/"></a>
-          <div class="article-nav-caption">Newer</div>
-          <div class="article-nav-title">centos7更换python3时出现的一些问题和应对措施</div>
-        </article>
-      </div>
-    
     
       <div class="card-item">
         <article>
           
-          <a class="card-link article-nav-link" href="/2019/05/18/hello-world/"></a>
+          <a class="card-link article-nav-link" href="/2019/05/18/Liang/"></a>
           <div class="article-nav-caption">Older</div>
-          <div class="article-nav-title">Hello World</div>
+          <div class="article-nav-title">Liang</div>
         </article>
       </div>
     
